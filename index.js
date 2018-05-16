@@ -16,68 +16,80 @@ const map = [
     "WWWWWWWWWWWWWWWWWWWWW"
 ];
 
+const textDiv = document.getElementById("textbox")
+let playa = undefined
 const destination = document.getElementById("map")
-
 let newMap = []
 
 for(let i = 0; i < map.length; i++) {
     let mapColumn = map[i]
     let newColumn = mapColumn.split("")
+
     newMap.push(newColumn)
 }
 
-for(let column = 0; column < newMap.length; column++) {
-    let mapColumn = newMap[column]
-    const columnDiv = document.createElement("div")
-    columnDiv.className = "column"
-    columnDiv.setAttribute("id", ("column" + column))
-    for(let row = 0; row < mapColumn.length; row++) {
+for(let rowIndex = 0; rowIndex < newMap.length; rowIndex++) {
+    let mapRow = newMap[rowIndex]
+    const rowDiv = document.createElement("div")
+    rowDiv.className = "row"
+    rowDiv.id = "row-" + rowIndex
+    for(let colIndex = 0; colIndex < mapRow.length; colIndex++) {
         const cell = document.createElement("div")
-        if(mapColumn[row] === "W") {
-            cell.className = "wall"
-        } else if(mapColumn[row] === " ") {
-            cell.className = "space"
-        } else if(mapColumn[row]=== "S") {
-            cell.className = "start"
-            cell.setAttribute("id", "start")
-        } else if(mapColumn[row] === "F") {
-            cell.className = "finish"
+        cell.dataset.rowIndex = rowIndex
+        cell.dataset.colIndex = colIndex
+        cell.className = "cell"
+        cell.id = "col-" + colIndex
+        if(mapRow[colIndex] === "W") {
+            cell.dataset.type = "wall"
+            cell.classList.add("wall")
+        } else if(mapRow[colIndex] === " ") {
+            cell.dataset.type = "space"
+            cell.classList.add("space")
+        } else if(mapRow[colIndex]=== "S") {
+            cell.dataset.type = "start"
+            cell.classList.add("start")
+            cell.id = "start"
+        } else if(mapRow[colIndex] === "F") {
+            cell.dataset.type = "finish"
+            cell.classList.add("finish")
         }
-        columnDiv.appendChild(cell)
+        rowDiv.appendChild(cell)
     }
-    destination.appendChild(columnDiv)
+    destination.appendChild(rowDiv)
 }
 
 function setStart() {
-    let boxDestination = document.getElementById("start")
-    let box = document.createElement("div")
-    box.className = "box"
-    box.setAttribute("id", "box")
-    boxDestination.appendChild(box)
+    let playaDestination = document.getElementById("start")
+    playa = document.createElement("div")
+    playa.id = "playa"
+    playaDestination.appendChild(playa)       
 }
 
 setStart()
 
-let boxTop = 200;
-let boxLeft = 200;
-
-'use strict';
-
 document.addEventListener('keydown', (event) => {
-    const keyName = event.key;
+    let targetRowIndex = Number(playa.parentElement.dataset.rowIndex)
+    let targetColIndex = Number(playa.parentElement.dataset.colIndex)
+
+
     if(event.key === 'ArrowDown') {
-        boxTop += 10
+        targetRowIndex += 1
     } else if(event.key === 'ArrowUp') {
-        boxTop -= 10
-    }
-    document.getElementById("box").style.top = boxTop + "px";
-});
-
-document.addEventListener('keydown', (event) => {
-    if(event.key === 'ArrowRight') {
-        boxLeft += 10
+        targetRowIndex -= 1
+    } else if(event.key === 'ArrowRight') {
+        targetColIndex += 1
     } else if(event.key === 'ArrowLeft') {
-        boxLeft -= 10
+        targetColIndex -= 1
     }
-    document.getElementById("box").style.left = boxLeft + "px"
+    
+    const rowSelector = "[data-row-index='" + targetRowIndex + "']"
+    const colSelector = "[data-col-index='" + targetColIndex + "']"
+    const targetCell = document.querySelector(rowSelector + colSelector)
+
+    if(targetCell.className === "cell space") {
+        targetCell.appendChild(playa)
+    } else if(targetCell.className === "cell finish") {
+        textDiv.textContent = "You now own the Master Sword. Zelda is impressed."
+        targetCell.appendChild(playa)
+    }
 })

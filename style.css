@@ -14,12 +14,13 @@ body {
     flex-wrap: wrap;
 }
 
-.column {
+.row {
     display: flex;
 }
 
 .wall {
-    background-color: rgb(55, 186, 230);
+    background-color: rgb(238, 209, 172);
+    background-image: url(tree.png);
     width: 50px;
     height: 50px;
     margin: 0;
@@ -35,7 +36,8 @@ body {
 }
 
 .start {
-    background-color: green;
+    background-image: url(triforce.png);
+    background-color: lightgray;
     width: 50px;
     height: 50px;
     margin: 0;
@@ -43,16 +45,23 @@ body {
 }
 
 .finish {
-    background-color: red;
+    background-color: lightgray;
+    background-image: url(mastersword.png);
     width: 50px;
     height: 50px;
     margin: 0;
     padding: 0;
 }
 
-.box {
-    background-color: purple;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+#playa {
+    background-image: url(link.png);
+    width: 50px;
+    height: 50px;
+}
+
+#textbox {
+    color: red;
+    font-size: 50px;
+    margin: 10px;
+    padding: 5px;
 }
